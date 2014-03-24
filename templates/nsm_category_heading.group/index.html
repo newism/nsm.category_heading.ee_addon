@@ -1,0 +1,21 @@
+{exp:nsm_category_heading
+    cat_url_title="{segment_2}"
+    channel="news"
+    cat_name_path_delimiter=" - "
+}
+    <ul>
+        <li><strong>&#123;channel_name&#125;</strong>: {channel_name}</li>
+        <li><strong>&#123;channel_title&#125;</strong>: {channel_title}</li>
+        <li><strong>&#123;channel_id&#125;</strong>: {channel_id}</li>
+        <li><strong>&#123;category_id&#125;</strong>: {category_id}</li>
+        <li><strong>&#123;category_description&#125;</strong>: {category_description}</li>
+        <li><strong>&#123;category_name_path&#125;</strong>: {category_name_path}</li>
+        <li><strong>&#123;category_name_path_reversed&#125;</strong>: {category_name_path_reversed}</li>
+        <li><strong>&#123;category_image&#125; … &#123;category_image&#125;</strong>:
+            {category_image}
+                This file is a {extension} and was uploaded on {upload_date format="%Y %m %d"}
+                <a href="{url}">View it now</a>
+            {/category_image}
+        </li>
+    </ul>
+{/exp:nsm_category_heading}
