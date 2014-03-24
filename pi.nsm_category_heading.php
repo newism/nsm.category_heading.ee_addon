@@ -29,8 +29,11 @@ class Nsm_category_heading
     public function __construct()
     {
         $ee = ee();
+        $category = null;
+        $categories = array();
 
         $categoryUrlTitle = $ee->TMPL->fetch_param('cat_url_title');
+        $categoryId = $ee->TMPL->fetch_param('cat_id');
         $channelName = $ee->TMPL->fetch_param('channel');
         $categoryNamePathDelimiter = $ee->TMPL->fetch_param('cat_name_path_delimiter', " - ");
 
@@ -60,23 +63,29 @@ class Nsm_category_heading
                 ch.channel_id as channel_id,
                 ch.channel_title as channel_title,
                 ch.channel_name as channel_name
-        ');
+            ');
         $db->from('categories as c');
         $db->join('category_groups as cg', 'c.group_id = cg.group_id');
         $db->join('channels as ch', 'cg.group_id = ch.cat_group');
         $db->where('ch.channel_name', $channelName);
 
-        $categories = array();
-
         $query = $db->get();
+
         if ($query->num_rows() > 0) {
             foreach ($query->result_array() as $row) {
                 $categories[$row['category_id']] = $row;
-                if ($row['category_url_title'] === $categoryUrlTitle) {
+                if ($row['category_url_title'] === $categoryUrlTitle || $row['category_id'] === $categoryId) {
                     $category = $row;
                 }
             }
         }
+
+        if (null === $category) {
+            $this->return_data = $ee->TMPL->no_results();
+
+            return $this->return_data;
+        }
+
 
         $categoryNamePathParts = $this->createCategoryNamePathParts($category, $categories);
         $category['category_name_path'] = implode($categoryNamePathParts, $categoryNamePathDelimiter);
@@ -141,7 +150,8 @@ class Nsm_category_heading
      *
      * @return string
      */
-    public static function usage() {
+    public static function usage()
+    {
         return "http://github.com/newism/nsm.category_heading.ee_addon";
     }
 }
